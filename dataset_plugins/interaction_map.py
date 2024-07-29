@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import json
 from typing import List
 
-from dataset_plugins.interaction.interaction_globals import LIST_OF_LOCATIONS
+from dataset_plugins.interaction_globals import LIST_OF_LOCATIONS
 from features_and_labels.map_base import MapBase, MapConfig, SampledBoundary
 from lib.utils import get_path_to_class
 
@@ -32,7 +32,7 @@ class InteractionMap(MapBase):
     ):
         if location not in LIST_OF_LOCATIONS:
             raise ValueError(
-                f"unknown location {location}. Map data is only available for the following locations {self._LIST_OF_LOCATIONS}"
+                f"unknown location {location}. Map data is only available for the following locations {LIST_OF_LOCATIONS}"
             )
         self.location = location
         self._config = {

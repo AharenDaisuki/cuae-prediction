@@ -33,6 +33,17 @@ from features_and_labels.map_base import MapConfig
 from lib.frame import Frame
 from lib.utils import ensure_init_type, to_python_standard
 
+class Encoder(json.JSONEncoder):  
+    def default(self, obj):  
+        if isinstance(obj, (np.int_, np.intc, np.intp, np.int8,  
+            np.int16, np.int32, np.int64, np.uint8,  
+            np.uint16, np.uint32, np.uint64)):  
+            return int(obj)  
+        elif isinstance(obj, (np.float_, np.float16, np.float32, np.float64)):  
+            return float(obj)  
+        elif isinstance(obj, (np.ndarray,)):  
+            return obj.tolist()  
+        return json.JSONEncoder.default(self, obj)
 
 @dataclass
 class StaticRolloutInfo:
@@ -99,8 +110,9 @@ class Rollout:
         """
         Save rollout to json file.
         """
+        # TODO: [Debug] TypeError: Object of type int32 is not JSON serializable
         with open(path, "w") as fp:
-            json.dump(self.to_dict(), fp, indent=2)
+            json.dump(self.to_dict(), fp, indent=2, cls=Encoder)
 
     def save_as_pickle(self, path: str) -> None:
         """
@@ -123,6 +135,7 @@ class Rollout:
         """
         Casts the Rollout instance to a python standard data type dictionary
         """
+        # TODO: [Debug] TypeError: Object of type int32 is not JSON serializable
         data = {
             "frames": to_python_standard(self.frames, dataclass_to_dict=True),
             "static_info": to_python_standard(self.static_info, dataclass_to_dict=True),

@@ -21,10 +21,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import argparse
 import os
 
-from dataset_plugins.interaction.interaction_converter import (
+import sys
+sys.path.append(r"C:\Users\COSI\Desktop\projects\cuae-prediction")
+
+from dataset_plugins.interaction_converter import (
     generate_rollouts_from_interaction,
 )
-from dataset_plugins.interaction.interaction_globals import LIST_OF_LOCATIONS
+from dataset_plugins.interaction_globals import LIST_OF_LOCATIONS
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -75,17 +78,22 @@ if __name__ == "__main__":
     os.makedirs(args.out, exist_ok=True)
     if len(os.listdir(args.out)):
         raise RuntimeError(f"out must be empty: {args.out}")
-
-    v12_path = "interaction-dataset_v1.2"
-    assert (
-        v12_path in args.interaction
-    ), f"Path {args.interaction} does not contain {v12_path}; INTERACTION version 1.2 must be used"
+    mode = os.path.basename(args.out) # train / val
+    # TODO: remove assertion
+    # v12_path = "interaction-dataset_v1.2"
+    # assert (
+    #     v12_path in args.interaction
+    # ), f"Path {args.interaction} does not contain {v12_path}; INTERACTION version 1.2 must be used"
 
     if args.locations is None:
         locations = []
         loc_tracks_files = os.listdir(args.interaction)
         for track_file in loc_tracks_files:
-            locations.append(track_file.replace(".csv", ""))
+            # TODO: remove suffix
+            if mode == "train": 
+                locations.append(track_file.replace("_train.csv", ""))
+            elif mode == "val": 
+                locations.append(track_file.replace("_val.csv", "")) 
     else:
         locations = args.locations
 
@@ -100,6 +108,7 @@ if __name__ == "__main__":
             path_to_parsed_map=args.parsed_map,
             location_name=location_name,
             num_workers=args.num_workers,
+            mode=mode, # TODO: add suffix
         )
 
         # store rollouts to disk

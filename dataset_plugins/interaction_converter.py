@@ -27,11 +27,11 @@ import pandas as pd
 from pathos.multiprocessing import ProcessingPool as Pool
 from tqdm import tqdm
 
-from dataset_plugins.interaction.interaction_globals import (
+from dataset_plugins.interaction_globals import (
     FRAME_RATE,
     PEDESTRIAN_CYCLIST_LENGTH_WIDTH,
 )
-from dataset_plugins.interaction.interaction_map import InteractionMap
+from dataset_plugins.interaction_map import InteractionMap
 from lib.frame import DynamicState, Frame, Meta, Obj, ObjectClasses
 from lib.rollout import Rollout, StaticRolloutInfo, cut_rollout
 from lib.utils import map_classes_to_rollouts_classes
@@ -77,18 +77,21 @@ def generate_rollouts_from_interaction(
     path_to_interaction: str,
     path_to_parsed_map: str,
     location_name: str,
+    mode: str, 
     num_workers: int = 1,
     only_tracks_to_predict: bool = False,
 ) -> List[Rollout]:
     """
     Generates INTERACTION rollouts with ego information.
     """
+    assert mode == 'train' or mode == 'val'
     # extract N rollouts from a single location
     location_rollouts = generate_scene_rollouts_from_interaction(
         path_to_interaction=path_to_interaction,
         path_to_parsed_map=path_to_parsed_map,
         location_name=location_name,
         num_workers=num_workers,
+        mode=mode
     )
 
     # parallelize extraction of ego-centric rollouts from list of location-wise, 'global' rollouts
@@ -115,14 +118,16 @@ def generate_scene_rollouts_from_interaction(
     path_to_interaction: str,
     path_to_parsed_map: str,
     location_name: str,
+    mode: str, 
     num_workers: int = 1,
 ) -> List[Rollout]:
     """
     :return rollouts: a list of rollouts for the given location; a single .csv file contains disjoint scenes (on the same location) denoted by the same time-step values and agent id's, therefore, multiple rollouts without defining an ego are extracted.
     """
+    assert mode == 'train' or mode == 'val'
     map_info = InteractionMap(path_to_interaction, path_to_parsed_map, location_name)
     traj_dfs = read_trajectory_data(
-        path_to_interaction, location_name
+        path_to_interaction, location_name + f'_{mode}'
     )  # returns a list of scene data frames
 
     lambda_create_rollout_from_pandas_frame = (

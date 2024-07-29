@@ -43,7 +43,7 @@ class SampledBoundary:
     def from_config(cls, config: dict):
         return cls(**config)
 
-
+# TODO: [Debug] ValueError: mutable default <class 'numpy.ndarray'> for field lane_indices is not allowed: use default_factory
 @dataclass
 class SampledBoundariesPadded:
     """
@@ -51,10 +51,14 @@ class SampledBoundariesPadded:
     This class is needed for run-time optimized boundary handling.
     """
 
-    lane_indices: np.ndarray = np.array([])
-    sides: np.ndarray = np.array([])
-    types: np.ndarray = np.array([])
-    point_arrays_padded: np.ndarray = np.array([])
+    # lane_indices: np.ndarray = np.array([])
+    # sides: np.ndarray = np.array([])
+    # types: np.ndarray = np.array([])
+    # point_arrays_padded: np.ndarray = np.array([])
+    lane_indices:        np.ndarray = field(default_factory=np.ndarray)
+    sides:               np.ndarray = field(default_factory=np.ndarray)
+    types:               np.ndarray = field(default_factory=np.ndarray)
+    point_arrays_padded: np.ndarray = field(default_factory=np.ndarray)
 
 
 @dataclass
@@ -64,8 +68,10 @@ class BorderPolygonsPadded:
     This is needed for run-time optimized polygon handling.
     """
 
-    lane_indices: np.ndarray = np.array([])
-    border_polygons_padded: np.ndarray = np.array([])
+    # lane_indices: np.ndarray = np.array([])
+    # border_polygons_padded: np.ndarray = np.array([])
+    lane_indices:           np.ndarray = field(default_factory=np.ndarray)
+    border_polygons_padded: np.ndarray = field(default_factory=np.ndarray)
 
 
 @dataclass

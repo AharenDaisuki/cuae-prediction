@@ -13,3 +13,5 @@ site/
 mlruns
 *coverage.xml
 .coverage
+raw_data/
+rollouts/
