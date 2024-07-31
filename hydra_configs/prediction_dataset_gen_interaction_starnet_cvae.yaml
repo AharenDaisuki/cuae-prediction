@@ -3,7 +3,7 @@
 defaults:
  - _self_
  - custom_help: dataset_generation
- - dataset_config: interaction
+ - dataset_config: interaction-test # interaction by default
  - features_labels_generator_config: interaction_starnet_cvae_features
  - override hydra/job_logging: disabled
 

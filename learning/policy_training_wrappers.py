@@ -150,6 +150,8 @@ class PolicyTrainingWrapper:
             batch,
             self._config.use_gpu,
         )
+        # TODO: [Debug] ValueError: Expected more than 1 value per channel when training, got input size torch.Size([1, 128])
+        assert features_labels.shape[0] > 1
         return self.train_loss(self.policy.forward(features_labels), features_labels)
 
     def validation_step(self, batch):

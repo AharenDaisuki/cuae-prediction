@@ -22,7 +22,7 @@ import torch
 
 from learning.data_curator_config import DataCuratorClassConfig, DataCuratorConfig
 from learning.learning_utils import make_datasets
-from lib.random import seed_worker
+from lib.random_init import seed_worker
 from lib.utils import get_path_to_class
 
 
@@ -55,7 +55,7 @@ class DataCurator:
             assert (
                 len(unique_sampling_weights) == 1
             ), "When sampling without replacement, all sampling weights have to be equal"
-
+        # TODO: [Debug] ValueError: Expected more than 1 value per channel when training, got input size torch.Size([1, 128])
         train_sampler = torch.utils.data.WeightedRandomSampler(
             weights=self.train_set.sample_weights,
             num_samples=int(
@@ -69,6 +69,7 @@ class DataCurator:
             num_workers=self._config.num_dataloader_workers,
             worker_init_fn=seed_worker,
             sampler=train_sampler,
+            drop_last=True,
         )
 
         dev_sampler = torch.utils.data.WeightedRandomSampler(
@@ -82,6 +83,7 @@ class DataCurator:
             num_workers=self._config.num_dataloader_workers,
             worker_init_fn=seed_worker,
             sampler=dev_sampler,
+            drop_last=True
         )
 
     @classmethod

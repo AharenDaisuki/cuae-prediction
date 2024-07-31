@@ -22,6 +22,12 @@ import hydra
 from omegaconf import OmegaConf
 from omegaconf.listconfig import ListConfig
 
+import sys
+sys.path.append(r"C:\Users\COSI\Desktop\projects\cuae-prediction")
+
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 from learning.imitation_learning import train_from_config
 from lib.hydra_utils import PATH_TO_HYDRA_CONFIGS, load_dataset_info
 

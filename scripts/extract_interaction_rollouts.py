@@ -79,6 +79,7 @@ if __name__ == "__main__":
     if len(os.listdir(args.out)):
         raise RuntimeError(f"out must be empty: {args.out}")
     mode = os.path.basename(args.out) # train / val
+    assert mode == 'train' or mode == 'val'
     # TODO: remove assertion
     # v12_path = "interaction-dataset_v1.2"
     # assert (

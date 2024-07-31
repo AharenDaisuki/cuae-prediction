@@ -25,6 +25,9 @@ This script can be used to generate a dataset consisting of input features and l
 import hydra
 from omegaconf import OmegaConf
 
+import sys
+sys.path.append(r"C:\Users\COSI\Desktop\projects\cuae-prediction")
+
 from lib.data_handling import DatasetGenerationConfig, generate_dataset_from_rollouts
 from lib.hydra_utils import PATH_TO_HYDRA_CONFIGS, instantiate_dataclass_from_omegaconf
 

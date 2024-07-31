@@ -43,7 +43,7 @@ from learning.policy_training_wrappers import (
     policy_training_wrapper_from_config,
 )
 from lib.data_handling import Dataset
-from lib.random import init_global_seeds
+from lib.random_init import init_global_seeds
 from lib.utils import (
     current_time,
     ensure_init_type,
@@ -470,6 +470,7 @@ def train(
         # Training
         policy.train()
         grad_norm_list = []
+        # TODO: [Debug] TypeError: h5py objects cannot be pickled (num_workers > 1)
         for batch in tqdm(
             policy_training_wrapper.data_curator.train_data_loader,
             desc="Training batch",

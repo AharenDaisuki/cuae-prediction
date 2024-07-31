@@ -94,22 +94,22 @@ def transform_pose_into_frame(
 
 
 def transform_velocity_to_local_frame(vel_global: np.ndarray, yaw: float) -> np.ndarray:
-    """
-    Transforms velocity vector from global frame orientation to local frame orientation.
+    # """
+    # Transforms velocity vector from global frame orientation to local frame orientation.
 
-    y                   v_lon
-    ^     v_lat  v_y    ^
-    |         ^   ^    /  object
-    |          \  |  @@@@
-    |           \ |@@@@
-    |           @@|@@--------> v_x
-    |          @@@@
-    |
-    |------------------------------>x
+    # y                   v_lon
+    # ^     v_lat  v_y    ^
+    # |         ^   ^    /  object
+    # |          \  |  @@@@
+    # |           \ |@@@@
+    # |           @@|@@--------> v_x
+    # |          @@@@
+    # |
+    # |------------------------------>x
 
-    v_x = v_lon * cos(yaw) - v_lat * sin(yaw)
-    v_y = v_lon * sin(yaw) + v_lat * cos(yaw)
-    """  # noqa W605
+    # v_x = v_lon * cos(yaw) - v_lat * sin(yaw)
+    # v_y = v_lon * sin(yaw) + v_lat * cos(yaw)
+    # """  # noqa W605
     R = np.transpose(_rotation_matrix(yaw))
     return np.linalg.solve(R, vel_global)
 
@@ -117,22 +117,22 @@ def transform_velocity_to_local_frame(vel_global: np.ndarray, yaw: float) -> np.
 def transform_acc_to_local_frame(
     acc_global: np.ndarray, vel_local: np.ndarray, yaw: float, yaw_dot: float
 ) -> np.ndarray:
-    """
-    Transforms acceleration vector from global frame orientation to local frame orientation.
+    # """
+    # Transforms acceleration vector from global frame orientation to local frame orientation.
 
-    y                    a_lon
-    ^     a_lat  a_y    ^
-    |         ^   ^    /  object
-    |          \  |  @@@@
-    |           \ |@@@@
-    |           @@|@@--------> a_x
-    |          @@@@
-    |
-    |------------------------------>x
+    # y                    a_lon
+    # ^     a_lat  a_y    ^
+    # |         ^   ^    /  object
+    # |          \  |  @@@@
+    # |           \ |@@@@
+    # |           @@|@@--------> a_x
+    # |          @@@@
+    # |
+    # |------------------------------>x
 
-    a_x = a_lon * cos(yaw) - v_lon * sin(yaw) * yaw_dot - a_lat * sin(yaw) - v_lat * cos(yaw) * yaw_dot
-    a_y = a_lon * sin(yaw) + v_lon * cos(yaw) * yaw_dot + a_lat * cos(yaw) - v_lat * sin(yaw) * yaw_dot
-    """  # noqa W605
+    # a_x = a_lon * cos(yaw) - v_lon * sin(yaw) * yaw_dot - a_lat * sin(yaw) - v_lat * cos(yaw) * yaw_dot
+    # a_y = a_lon * sin(yaw) + v_lon * cos(yaw) * yaw_dot + a_lat * cos(yaw) - v_lat * sin(yaw) * yaw_dot
+    # """  # noqa W605
     R = np.transpose(_rotation_matrix(yaw))
     b = np.array(
         [

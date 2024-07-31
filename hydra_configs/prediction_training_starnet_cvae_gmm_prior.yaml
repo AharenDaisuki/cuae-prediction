@@ -10,7 +10,8 @@ defaults:
  - training_config/prediction_policy_wrapper_output_config: cvae_covar_output
  - override hydra/job_logging: disabled
 
-dataset_info: ${training_config.data_curator_config.config.datasets_root}/${training_config.data_curator_config.config.dataset_paths.0.path}/meta.json
+# dataset_info: ${training_config.data_curator_config.config.datasets_root}/${training_config.data_curator_config.config.dataset_paths.0.path}/meta.json
+dataset_info: ${training_config.data_curator_config.config.dataset_paths.0.path}\meta.json
 
 cvae_base_model: starnet
 
